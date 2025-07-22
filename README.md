@@ -1,0 +1,1 @@
+This tool is designed to help users assess their level of control during different phases of the cloud data migration process—pre-migration planning and analysis, risk assessment and strategy, data preparation and cleansing, migration execution, and post-migration validation and optimization.
