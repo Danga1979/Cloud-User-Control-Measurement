@@ -1,1100 +1,978 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>User Control Measurement for Cloud Data Migration Process</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --primary-color: #4361ee;
-      --secondary-color: #3f37c9;
-      --accent-color: #4895ef;
-      --light-color: #f8f9fa;
-      --dark-color: #212529;
-      --success-color: #4cc9f0;
-      --warning-color: #f8961e;
-      --danger-color: #f94144;
-      --border-radius: 8px;
-      --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      --transition: all 0.3s ease;
-    }
-    
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    
-    body {
-      font-family: 'Roboto', sans-serif;
-      line-height: 1.6;
-      color: var(--dark-color);
-      background-color: #f5f7fa;
-      padding: 0;
-      margin: 0;
-    }
-    
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-    
-    /* Header Styles */
-    .logo-header {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      margin-bottom: 30px;
-      padding: 20px;
-      background-color: white;
-      border-radius: var(--border-radius);
-      box-shadow: var(--box-shadow);
-    }
-    
-    .logo-img {
-      height: 70px;
-      width: 70px;
-      object-fit: contain;
-    }
-    
-    .logo-title {
-      font-size: 28px;
-      color: var(--primary-color);
-      margin: 0;
-      font-weight: 700;
-    }
-    
-    .logo-subtitle {
-      font-size: 16px;
-      color: #6c757d;
-      margin-top: 5px;
-      font-weight: 400;
-    }
-    
-    /* Tab Navigation */
-    .nav-tabs {
-      display: flex;
-      list-style-type: none;
-      padding: 0;
-      margin-bottom: 30px;
-      background-color: white;
-      border-radius: var(--border-radius);
-      box-shadow: var(--box-shadow);
-      overflow: hidden;
-    }
-    
-    .nav-tabs li {
-      flex: 1;
-      text-align: center;
-    }
-    
-    .nav-tabs button {
-      padding: 15px 20px;
-      border: none;
-      background-color: transparent;
-      cursor: pointer;
-      font-weight: 500;
-      font-size: 16px;
-      width: 100%;
-      transition: var(--transition);
-      color: #6c757d;
-    }
-    
-    .nav-tabs button:hover {
-      color: var(--primary-color);
-      background-color: rgba(67, 97, 238, 0.1);
-    }
-    
-    .nav-tabs button.active {
-      color: white;
-      background-color: var(--primary-color);
-    }
-    
-    /* Tab Content */
-    .tab-page {
-      display: none;
-      background-color: white;
-      border-radius: var(--border-radius);
-      box-shadow: var(--box-shadow);
-      padding: 25px;
-      margin-bottom: 30px;
-    }
-    
-    .active-tab {
-      display: block;
-      animation: fadeIn 0.5s ease;
-    }
-    
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    /* Table Styles */
-table thead {
-  background-color: var(--primary-color);
-  color: white;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Migration Evaluation Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+        }
+        .login-container, .phase-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            padding: 30px;
+            margin-top: 50px;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .evaluation-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .evaluation-table th, .evaluation-table td {
+            border: 1px solid #dee2e6;
+            padding: 12px;
+            text-align: left;
+            vertical-align: middle;
+        }
+        .evaluation-table th {
+            background-color: #343a40;
+            color: white;
+        }
+        .phase-header {
+            background-color: #495057;
+            color: white;
+            font-weight: bold;
+        }
+        .metric-header {
+            background-color: #6c757d;
+            color: white;
+        }
+        .indicator-header {
+            background-color: #adb5bd;
+        }
+        .control-minimum {
+            background-color: #ff6b6b;
+            color: white;
+        }
+        .control-moderate {
+            background-color: #ffd166;
+        }
+        .control-maximum {
+            background-color: #06d6a0;
+            color: white;
+        }
+        .score-input {
+            width: 50px;
+            text-align: center;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            padding: 5px;
+        }
+        .btn-primary {
+            background-color: #1a5276;
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #154360;
+            color: white;
+        }
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .tooltip-inner {
+            max-width: 300px;
+            padding: 10px;
+        }
+        .hidden {
+            display: none;
+        }
+        .progress {
+            height: 25px;
+            margin-bottom: 20px;
+        }
+        .progress-bar {
+            background-color: #1a5276;
+        }
+        .summary-container {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            border: 1px solid #dee2e6;
+        }
+        .summary-title {
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #1a5276;
+        }
+        .summary-item {
+            margin-bottom: 10px;
+        }
+        .total-score {
+            font-weight: bold;
+            background-color: #e9ecef;
+        }
+        .control-unit {
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .control-minimum {
+    background-color: #ff6b6b; /* Red */
+    color: white;
+}
+.control-moderate {
+    background-color: #ffd166; /* Yellow */
+}
+.control-maximum {
+    background-color: #06d6a0; /* Green */
+    color: white;
 }
 
-table th {
-  padding: 12px 15px;
-  text-align: left;
-  font-weight: 500;
-  opacity: 1; /* Ensure full opacity */
-  background-color: var(--primary-color); /* Solid color */
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 15px;
 }
-
-table thead tr:first-child th {
-  background-color: var(--primary-color); /* Make sure first row is also solid */
+.summary-grid-item {
+    background-color: white;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    padding: 10px;
 }
-
-table thead tr:last-child th {
-  background-color: var(--primary-color); /* Make sure second row is solid */
-  opacity: 1; /* Full opacity */
+.summary-grid-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #1a5276;
 }
-    
-    /* Table Styles */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 25px;
-      font-size: 14px;
-    }
-    
-    table thead {
-      background-color: var(--primary-color);
-      color: white;
-    }
-    
-    table th {
-      padding: 12px 15px;
-      text-align: left;
-      font-weight: 500;
-    }
-    
-    table td {
-      padding: 10px 15px;
-      border-bottom: 1px solid #e9ecef;
-      vertical-align: middle;
-    }
-    
-    table tr:nth-child(even) {
-      background-color: #f8f9fa;
-    }
-    
-    table tr:hover {
-      background-color: rgba(67, 97, 238, 0.05);
-    }
-    
-    /* Form Elements */
-    select {
-      padding: 8px 12px;
-      border: 1px solid #ced4da;
-      border-radius: 4px;
-      background-color: white;
-      font-family: inherit;
-      font-size: 14px;
-      transition: var(--transition);
-      width: 70px;
-    }
-    
-    select:focus {
-      outline: none;
-      border-color: var(--primary-color);
-      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
-    }
-    
-    /* Button Styles */
-    button {
-      background-color: var(--primary-color);
-      color: white;
-      border: none;
-      padding: 12px 24px;
-      border-radius: var(--border-radius);
-      cursor: pointer;
-      font-size: 16px;
-      font-weight: 500;
-      transition: var(--transition);
-      display: inline-block;
-      margin-top: 10px;
-    }
-    
-    button:hover {
-      background-color: var(--secondary-color);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-    }
-    
-    /* Secondary Button Styles */
-    .secondary-btn {
-      background-color: #6c757d;
-      margin-left: 10px;
-    }
-    
-    .secondary-btn:hover {
-      background-color: #5a6268;
-    }
-    
-    .danger-btn {
-      background-color: var(--danger-color);
-    }
-    
-    .danger-btn:hover {
-      background-color: #d03437;
-    }
-    .phase-header {
-  background-color: #e9ecef !important;
-  font-weight: 600 !important;
-}
-
-.phase-header td {
-  padding: 10px 15px !important;
-  font-size: 1.1em !important;
-}
-    
-    /* Results Section */
-    .result {
-      margin-top: 30px;
-      padding: 20px;
-      background-color: #f8f9fa;
-      border-radius: var(--border-radius);
-    }
-    
-    .result h3 {
-      color: var(--primary-color);
-      margin-bottom: 15px;
-      font-size: 20px;
-    }
-    
-    .overall {
-      margin-top: 20px;
-      padding: 15px;
-      background-color: white;
-      border-radius: var(--border-radius);
-      font-size: 18px;
-      box-shadow: var(--box-shadow);
-    }
-    
-    /* Status Classes */
-    .minimum { color: var(--danger-color); font-weight: 500; }
-    .moderate { color: var(--warning-color); font-weight: 500; }
-    .maximum { color: var(--success-color); font-weight: 500; }
-    
-    /* Dashboard Cards */
-    .card-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 20px;
-      margin-top: 20px;
-    }
-    
-    .card {
-      background-color: white;
-      border-radius: var(--border-radius);
-      padding: 20px;
-      box-shadow: var(--box-shadow);
-    }
-    
-    .card h4 {
-      color: var(--primary-color);
-      margin-bottom: 15px;
-      font-size: 18px;
-    }
-    
-    /* Responsive Adjustments */
-    @media (max-width: 768px) {
-      .nav-tabs {
-        flex-direction: column;
-      }
-      
-      table {
-        display: block;
-        overflow-x: auto;
-      }
-      
-      .logo-header {
-        flex-direction: column;
-        text-align: center;
-      }
-      
-      .btn-group {
-        display: flex;
-        flex-direction: column;
-      }
-      
-      .btn-group button {
-        margin-left: 0;
-        margin-bottom: 10px;
-        width: 100%;
-      }
-    }
-    
-    /* Metric Descriptions */
-    #descriptionList {
-      list-style-type: none;
-    }
-    
-    #descriptionList li {
-      padding: 15px;
-      margin-bottom: 10px;
-      background-color: #f8f9fa;
-      border-radius: var(--border-radius);
-      transition: var(--transition);
-    }
-    
-    #descriptionList li:hover {
-      background-color: rgba(67, 97, 238, 0.05);
-      transform: translateX(5px);
-    }
-    
-    #descriptionList li strong {
-      color: var(--primary-color);
-      display: block;
-      margin-bottom: 5px;
-    }
-    
-    /* Phase headers in tables */
-    .phase-header {
-      background-color: #e9ecef !important;
-      font-weight: 600 !important;
-    }
-    
-    /* Tooltip styles */
-    .tooltip {
-      position: relative;
-      display: inline-block;
-      cursor: help;
-    }
-    
-    .tooltip .tooltiptext {
-      visibility: hidden;
-      width: 200px;
-      background-color: #555;
-      color: #fff;
-      text-align: center;
-      border-radius: 6px;
-      padding: 5px;
-      position: absolute;
-      z-index: 1;
-      bottom: 125%;
-      left: 50%;
-      margin-left: -100px;
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-    
-    .tooltip:hover .tooltiptext {
-      visibility: visible;
-      opacity: 1;
-    }
-    
-    /* Button group */
-    .btn-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    
-    .factor-label {
-      font-weight: bold;
-      color: #495057;
-      font-size: 0.8em;
-    }
-    
-    .score-input {
-      width: 50px !important;
-      text-align: center;
-    }
-    
-    .hint-box {
-      background-color: #e9ecef;
-      padding: 10px;
-      border-radius: var(--border-radius);
-      margin-bottom: 20px;
-      font-size: 0.9em;
-    }
-  </style>
+    </style>
 </head>
 <body>
-
-<div class="container">
-  <div class="logo-header">
-    <img src="image.jpeg" alt="Cloud Migration Logo" class="logo-img">
-    <div>
-      <h1 class="logo-title">User Control Measurement for Cloud Data Migration Process</h1>
-      <p class="logo-subtitle"><b>Instruction: For each metric/indicator, rate how the affecting factors (security, cost, legal, and personnel knowledge) impact on user control level</p></b>
+    <!-- Login Screen -->
+    <div class="container-fluid py-4" id="loginScreen">
+        <div class="login-container">
+            <h1 class="text-center mb-4">Migration Evaluation Dashboard</h1>
+            <div class="mb-3">
+                <label for="username" class="form-label">User ID</label>
+                <input type="text" class="form-control" id="username" placeholder="Enter your user ID (e.g., U1, U2, etc.)">
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" placeholder="Enter your password">
+            </div>
+            <button id="loginBtn" class="btn btn-primary w-100">
+                <i class="fas fa-sign-in-alt me-2"></i>Login
+            </button>
+        </div>
     </div>
-  </div>
 
-  <ul class="nav-tabs">
-    <li><button class="active" onclick="openTab('metrics')">Metrics Calculator</button></li>
-    <li><button onclick="openTab('overall')">Overall Dashboard</button></li>
-    <li><button onclick="openTab('details')">Metric Descriptions</button></li>
-  </ul>
+    <!-- Evaluation Screens -->
+    <div class="container-fluid py-4 hidden" id="evaluationScreen">
+        <div class="d-flex justify-content-between mb-3">
+            <div>
+                <span id="currentUserDisplay" class="fw-bold"></span>
+            </div>
+            <div>
+                <button id="exportBtn" class="btn btn-success me-2">
+                    <i class="fas fa-file-excel me-2"></i>Export Report
+                </button>
+                <button id="logoutBtn" class="btn btn-danger">
+                    <i class="fas fa-sign-out-alt me-2"></i>Logout
+                </button>
+            </div>
+        </div>
 
-  <!-- Metrics Calculator Tab -->
-  <div id="metrics" class="tab-page active-tab">
-    <div class="hint-box">
-      <strong>Hint:</strong> S = Security, C = Cost, L = Legal, PK = Personnel Knowledge, NA = Not Applicable = 0
+        <div class="progress">
+            <div id="progressBar" class="progress-bar" role="progressbar" style="width: 0%"></div>
+        </div>
+
+        <!-- Phase containers will be generated dynamically -->
+        <div id="phaseContainers"></div>
     </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- SheetJS for Excel export -->
+    <script src="https://cdn.sheetjs.com/xlsx-0.19.3/package/dist/xlsx.full.min.js"></script>
     
-    <div style="overflow-x: auto;">
-      <table>
-        <thead>
-          <tr>
-            <th>Phase</th>
-            <th>Metric</th>
-            <th>Indicator</th>
-            <th>Description</th>
-            <th colspan="4">Factors</th>
-            <th>Total Score</th>
-            <th>Control Level</th>
-          </tr>
-          <tr>
-            <th colspan="4"></th>
-            <th>S</th>
-            <th>C</th>
-            <th>L</th>
-            <th>PK</th>
-            <th></th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody id="metricsTable"></tbody>
-      </table>
-    </div>
+    <script>
+        // Data structure for the evaluation metrics with questions
+        const evaluationData = [
+            {
+                phase: "Pre-migration Planning and Analysis",
+                metrics: [
+                    {
+                        metric: "Standards",
+                        indicators: [
+                            {
+                                name: "Best Practice",
+                                question: "How is user control impacted by the factors in the use of cloud procedures that are prescribed as being most effective?",
+                                dimensions: {
+                                    S: "1- Procedures ignored: exposes vulnerabilities\n2 – Some practices applied: reduces but doesn't eliminate risk\n3 – Fully applied: enhances security and reduces threats\nNA - Not applicable",
+                                    C: "1 - Inefficient practices increase cost\n2 – Somewhat cost-effective\n3 – Fully cost-effective\nNA - Not applicable",
+                                    L: "1- Practices ignore compliance\n2 - Partial compliance\n3 - Fully compliant\nNA - Not applicable",
+                                    PK: "1 - User unaware of best practices\n2 - Some users are aware\n3 - Fully informed users\nNA - Not applicable"
+                                }
+                            },
+                            {
+                                name: "Authentication",
+                                question: "To what extent is user authentication enforced",
+                                dimensions: {
+                                    S: "1 - Identity verification is not crucial: open to breaches\n2 - Identity verification is necessary: limited protection\n3 - Identity verification is a most: only authorized users have access\nNA - Not applicable",
+                                    C: "1 - No authentication: leads to potential costly breaches\n2 – Partial authentication: somewhat cost-effective\n3 – Full authentication required: reduce long-term security costs\nNA - Not applicable",
+                                    L: "1 - Violates data protection laws\n2 - Partial compliance\n3 - Meets legal access requirements\nNA - Not applicable",
+                                    PK: "1 - Staff unaware of access control procedures\n2 - Some awareness\n3 - Fully trained in access management\nNA - Not applicable"
+                                }
+                            },
+                            {
+                                name: "Strategy",
+                                question: "How is user control impacted by the factors in the alignment between the migration plan and data migration process?",
+                                dimensions: {
+                                    S: "1 - Poor alignment: no security plan, risks data loss\n2 - Moderate alignment: weak security protocols\n3 - Strong alignment: protects data\nNA - Not applicable",
+                                    C: "1 - Poor alignment: unexpected costs\n2 - Moderate alignment: contains some costs\n3 - Strong alignment: within budget\nNA - Not applicable",
+                                    L: "1 - Non-compliance due to poor alignment\n2 - Partial compliance\n3 - Compliant with legal requirements\nNA - Not applicable",
+                                    PK: "1 - Staff not involved in planning\n2 - Limited knowledge of strategy\n3 - Fully aware and involved\nNA - Not applicable"
+                                }
+                            },
+                            {
+                                name: "Industry",
+                                question: "To what extent are industry-specific requirements integrated into the pre-migration planning process?",
+                                dimensions: {
+                                    S: "1 - Requirements ignored: insecure practices\n2 - Partially considered\n3 - Fully integrated: ensures security\nNA - Not applicable",
+                                    C: "1 - Ignoring standards leads to costly fixes\n2 - Some inefficiencies\n3 - Saves cost via standard practices\nNA - Not applicable",
+                                    L: "1 - Non-compliant with industry regulations\n2 - Some compliance\n3 - Fully compliant\nNA - Not applicable",
+                                    PK: "1 - Staff unaware of industry needs\n2 - Some knowledge\n3 - Full understanding and application\nNA - Not applicable"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                phase: "Risk Assessment and Strategy",
+                metrics: [
+                    {
+                        metric: "Standards",
+                        indicators: [
+                            {
+                                name: "Strategy",
+                                question: "To what extent does the migration strategy reflect a comprehensive risk mitigation plan",
+                                dimensions: {
+                                    S: "1 - No strategic risk plan: exposes vulnerabilities\n2 - Partial strategy: basic risk controls\n3 - Strong strategy: addresses and mitigates security risks\nNA - Not applicable",
+                                    C: "1 - Poor planning leads to unanticipated expenses\n2 - Budget partially considered\n3 - Costs optimized through strategic planning\nNA - Not applicable",
+                                    L: "1 - Ignores compliance needs\n2 - Some legal considerations included\n3 - Fully aligned with legal obligations\nNA - Not applicable",
+                                    PK: "1 - Staff unaware of migration strategy\n2 - Some staff understand risk strategy\n3 - Staff well-informed and aligned\nNA - Not applicable"
+                                }
+                            },
+                            {
+                                name: "Authentication",
+                                question: "To what extent are access points evaluated and relevant measures provided?",
+                                dimensions: {
+                                    S: "1 - No authentication measures: access vulnerable\n2 - Some access controls applied\n3 - Comprehensive authentication measures\nNA - Not applicable",
+                                    C: "1 – Laxity to access point can lead to costly breaches\n2 - Basic controls contain some risks\n3 – Strong access controls reduce future costs\nNA - Not applicable",
+                                    L: "1 - Fails to meet access-related regulations\n2 - Some compliance measures\n3 - Fully meets authentication-related laws\nNA - Not applicable",
+                                    PK: "1 - Users unclear on authentication roles\n2 - Some familiarity with access protocols\n3 - Users well-trained on authentication policies\nNA - Not applicable"
+                                }
+                            },
+                            {
+                                name: "Industry",
+                                question: "To what extent are industry standards for risk assessment built in design?",
+                                dimensions: {
+                                    S: "1 - Industry security standards ignored\n2 - Standards partially integrated\n3 - Fully complies with industry-secured designs\nNA - Not applicable",
+                                    C: "1 - Lack of standardization increases costs\n2 - Some cost inefficiencies exist\n3 - Standards help minimize operational costs\nNA - Not applicable",
+                                    L: "1 - Non-compliance with industry laws\n2 - Partial legal adherence\n3 - Fully legally compliant\nNA - Not applicable",
+                                    PK: "1 - Team unfamiliar with industry standards\n2 - Some awareness\n3 - Staff fully trained in industry-aligned processes\nNA - Not applicable"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                phase: "Data Preparation and Cleansing",
+                metrics: [
+                    {
+                        metric: "Standards",
+                        indicators: [
+                            {
+                                name: "Best practice",
+                                question: "How well are best practice procedures followed in data extraction from source to target database?",
+                                dimensions: {
+                                    S: "1 - Unethical practice exposes data\n2 - Some protective steps taken\n3 - Secure and validated extraction\nNA - Not applicable",
+                                    C: "1 - Inefficient extraction leads to extra cost\n2 - Partial optimization\n3 – Efficient extraction saves cost\nNA - Not applicable",
+                                    L: "1 – Poor data handling breaches compliance\n2 - Somewhat adheres to legal norms\n3 - Fully compliant with data transfer laws\nNA - Not applicable",
+                                    PK: "1 - Team lacks experience in secure extraction\n2 - Limited understanding\n3 - Team well experienced in extraction tool and practices\nNA - Not applicable"
+                                }
+                            },
+                            {
+                                name: "Authentication",
+                                question: "To what extent is the data validated for consistency, accuracy, and proper formatting?",
+                                dimensions: {
+                                    S: "1 - Inconsistent data risks breaches\n2 - Some quality checks in place\n3 - Data well-authenticated and secure\nNA - Not applicable",
+                                    C: "1 - Invalid data increases post-migration costs\n2 – Partially valid data attracts extra costs for rework\n3 - Clean data reduces overall cost\nNA - Not applicable",
+                                    L: "1 - Improper data violates regulations\n2 - Partial compliance\n3 – Full compliance\nNA - Not applicable",
+                                    PK: "1 - Staff unaware of validation techniques\n2 - Limited skills\n3 - Skilled in data quality assurance\nNA - Not applicable"
+                                }
+                            },
+                            {
+                                name: "Industry",
+                                question: "To what extent do the technicalities involved agree with cloud companies and practitioners standard?",
+                                dimensions: {
+                                    S: "1 – Industry standards ignored: security gaps\n2 - Partially aligned with standards\n3 - Fully compliant with security practices\nNA - Not applicable",
+                                    C: "1 - Ignoring industry standards leads to inefficiencies\n2 – Partial industry standards leads to some resource waste\n3 – Adherence reduces rework cost\nNA - Not applicable",
+                                    L: "1 - Non-compliant with industry regulations attracts legal action\n2 - Partly compliant\n3 - Fully compliant with legal industry norms\nNA - Not applicable",
+                                    PK: "1 - Staff not trained in industry specifics\n2 - Some familiarity\n3 – Staff fully trained in industry techniques\nNA - Not applicable"
+                                }
+                            },
+                            {
+                                name: "Strategy",
+                                question: "To what extent is the source data audited, cleaned, and validated as part of the migration preparation strategy?",
+                                dimensions: {
+                                    S: "1 - No audit leads to risky data transfers\n2 - Some security audits done\n3 - Thoroughly audited: safe data transfer\nNA - Not applicable",
+                                    C: "1 - Dirty data increases migration cost\n2 - Minor cleanup done\n3 - Clean data ensures cost-efficiency\nNA - Not applicable",
+                                    L: "1 - Violates data integrity and compliance laws\n2 - Partial compliance with regulations\n3 - Fully compliant with audit rules: valid data\nNA - Not applicable",
+                                    PK: "1 - Staff unaware of cleansing processes\n2 - Basic understanding\n3 - Staff skilled in data preparation and cleansing protocols\nNA - Not applicable"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                phase: "Migration execution",
+                metrics: [
+                    {
+                        metric: "Performance",
+                        indicators: [
+                            {
+                                name: "QoS",
+                                question: "To what extent are priorities effectively assigned to different users, applications, and processes",
+                                dimensions: {
+                                    S: "1 - No priority enforcement: vulnerable processes exposed\n2 - Some critical assets prioritized\n3 - All key services priority adhered.\nNA - Not applicable",
+                                    C: "1 - Poor prioritization leads to resource waste\n2 - Partial priority of resources lead to extra service cost\n3 - Cost-efficient migration\nNA - Not applicable",
+                                    L: "1 - Fails to prioritize sensitive data legally\n2 - Some consideration of data categories\n3 - Prioritizes compliance\nNA - Not applicable",
+                                    PK: "1 - Users unaware of service priorities\n2 - Some knowledge of QoS attributes\n3 - Fully aware and involved in QoS prioritization\nNA - Not applicable"
+                                }
+                            },
+                            {
+                                name: "Reliability",
+                                question: "To what extent can users depend on the data migration process",
+                                dimensions: {
+                                    S: "1 - Unreliable service may lead to breaches\n2 - Occasionally unstable\n3 - Reliable and secure service\nNA - Not applicable",
+                                    C: "1 - Errors cause expensive rollbacks\n2 - Some rework needed\n3 - Smooth process saves cost\nNA - Not applicable",
+                                    L: "1 – Service errors may violate audit trails\n2 - Limited service logs\n3 – Full service performance logs\nNA - Not applicable",
+                                    PK: "1 - Inexperienced team causes disruptions\n2 - Somewhat trained\n3 - Skilled team ensures stability\nNA - Not applicable"
+                                }
+                            },
+                            {
+                                name: "Time",
+                                question: "To what extent is the migration completed within the scheduled time frame?",
+                                dimensions: {
+                                    S: "1 - Delays leave data exposed\n2 - Some gaps in timing may expose data\n3 - Timely migration reduces exposure\nNA - Not applicable",
+                                    C: "1 - Overruns lead to excessive costs\n2 - Slight delays leads to manageable cost\n3. Timely migration reduces cost\nNA - Not applicable",
+                                    L: "1 - Time lags may breach SLAs\n2 - Moderate impact on legal timelines\n3 - Fully aligned with legal obligations\nNA - Not applicable",
+                                    PK: "1 - Staff unable to manage schedule\n2 - Partially competent\n3 - Efficient scheduling and execution\nNA - Not applicable"
+                                }
+                            },
+                            {
+                                name: "Capacity",
+                                question: "To what extent is workload distribution balanced?",
+                                dimensions: {
+                                    S: "1 - Overloaded systems increase risk\n2 - Partial load balancing\n3 - Optimal load balancing increases performance\nNA - Not applicable",
+                                    C: "1 - Poor workload utilization increases costs\n2 - Moderate inefficiencies\n3 - Full workload optimization minimizes cost\nNA - Not applicable",
+                                    L: "1 – Poor workload affects contractual agreement\n2 - Occasionally flag legal issues\n3 - Within agreed legal bounds\nNA - Not applicable",
+                                    PK: "1 – Staff lack technical skills on workload\n2 - Some insight on load balancing\n3 – Skilled technical staff\nNA - Not applicable"
+                                }
+                            },
+                            {
+                                name: "Downtime",
+                                question: "To what extent is service disruption avoided during the migration process?",
+                                dimensions: {
+                                    S: "1 – Unplanned downtime has adverse effect on business transaction\n2 – Partially schedule downtime risk up-peak transaction\n3 – Planned downtime minimizes risk\nNA - Not applicable",
+                                    C: "1 - Loss of service increases cost\n2 - Some disruption tolerated\n3 - Near-zero downtime saves money\nNA - Not applicable",
+                                    L: "1 - Violates uptime obligations\n2 - Limited SLA breaches\n3 - Full compliance with availability SLAs\nNA - Not applicable",
+                                    PK: "1 – Staff lack skills\n2 - Some planning skills in place\n3 Skilled staff in control\nNA - Not applicable"
+                                }
+                            },
+                            {
+                                name: "Throughput",
+                                question: "The amount of data that is transferred to cloud at a given time indicate optimal performance",
+                                dimensions: {
+                                    S: "1 – No throughput checks\n2 - Limited monitoring\n3 - Throughput monitoring in place\nNA - Not applicable",
+                                    C: "1 – No checks slow progress, and raises cost\n2 – Some cost\n3 - Optimized transfer saves cost\nNA - Not applicable",
+                                    L: "1 - Missing throughput logs breaches audit rules\n2 - Partial tracking\n3 - Logs meet legal audit requirements\nNA - Not applicable",
+                                    PK: "1 - No expertise in throughput tuning\n2 - Some skill in tuning\n3 - Well-trained staff in optimizing performance\nNA - Not applicable"
+                                }
+                            },
+                            {
+                                name: "Transfer speed",
+                                question: "To what extent does actual data transfer rate from on-premise to cloud indicates efficiency?",
+                                dimensions: {
+                                    S: "1 - Speed prioritized over safety is risky\n2 - Transfer rate inconsistent: vulnerable\n3 - Balanced and secured\nNA - Not applicable",
+                                    C: "1 - Slow speed increases man-hours\n2 - Moderate efficiency\n3 - Fast transfer minimizes cost\nNA - Not applicable",
+                                    L: "1 - Slow transfer speed disrupts compliance timelines\n2 - Partly within limits\n3 - Fully meets legal time constraints\nNA - Not applicable",
+                                    PK: "1 - Staff lacks optimization skills\n2 - Partial understanding\n3 - Skilled in transfer speed tuning\nNA - Not applicable"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                phase: "Post-migration Validation and Optimization",
+                metrics: [
+                    {
+                        metric: "Performance",
+                        indicators: [
+                            {
+                                name: "QoS",
+                                question: "To what extent are priorities to different applications, users, and processes maintained?",
+                                dimensions: {
+                                    S: "1 - No prioritization: compromises secure services\n2 - Some services prioritized\n3 – All services are fully prioritized\nNA - Not applicable",
+                                    C: "1 – Poor resources allocation, increases service costs\n2 - Partial prioritization reduces cost mildly\n3 – Proper resource allocation aligns with cost efficiency goals\nNA - Not applicable",
+                                    L: "1 – Service regulations not prioritized: lead to legal dispute\n2 – Compliance to some related service task.\n3 - All services prioritized appropriately\nNA - Not applicable",
+                                    PK: "1 - Staff unaware of QoS importance\n2 - Partial understanding of QoS impact\n3 - Skilled in configuring and monitoring QoS priorities\nNA - Not applicable"
+                                }
+                            },
+                            {
+                                name: "Throughput",
+                                question: "To what extent is application data access responsive?",
+                                dimensions: {
+                                    S: "1 - Slow response exposures data to threats\n2 - Delays partially managed\n3 - Secure access with minimal disruption\nNA - Not applicable",
+                                    C: "1 - Lag leads to wasted compute time and added costs\n2 – Moderate cost\n3 - High throughput lowers operational costs\nNA - Not applicable",
+                                    L: "1 - Delays breach SLA\n2 - Some legal deadlines met\n3 - Throughput supports all compliance requirements\nNA - Not applicable",
+                                    PK: "1 - Lacks skills to diagnose and improve access speed\n2 - Basic understanding of performance tuning\n3 - Expert in throughput tuning and performance analysis\nNA - Not applicable"
+                                }
+                            },
+                            {
+                                name: "Availability",
+                                question: "To what extent is data available after migration?",
+                                dimensions: {
+                                    S: "1 - Unsecure access points cause data inaccessibility\n2 - Some security layers misconfigured\n3 - Secured access ensures data availability\nNA - Not applicable",
+                                    C: "1 - High recovery and maintenance cost due to unavailability\n2 - Moderate cost to address availability gaps\n3 - Minimal cost with resilient systems\nNA - Not applicable",
+                                    L: "1 - Data not accessible as required by law or audit\n2 - Some legal data access requirements unmet\n3 - Availability complies with all regulations\nNA - Not applicable",
+                                    PK: "1 - Staff lacks skills to restore services\n2 – Staff can troubleshoot simple issues\n3 – Staff are skilled to ensure data availability\nNA - Not applicable"
+                                }
+                            },
+                            {
+                                name: "Downtime",
+                                question: "To what extent is downtime planned, scheduled and manage?",
+                                dimensions: {
+                                    S: "1 – Unscheduled downtime introduces vulnerabilities\n2 - Basic security protocols during downtime\n3 – Well planned downtime\nNA - Not applicable",
+                                    C: "1 - Unplanned downtime results in financial losses\n2 - Partial financial losses due to notice\n3 – Scheduled downtime saves cost\nNA - Not applicable",
+                                    L: "1 -- Violates SLAs thereby breaches compliance obligations\n2 - Some legal provisions met\n3 - Fully compliant with legal downtime requirements\nNA - Not applicable",
+                                    PK: "1 - Lacks capacity to plan or communicate downtimes\n2 - Understands basics of downtime scheduling\n3 - Highly skilled in orchestrating planned downtimes\nNA - Not applicable"
+                                }
+                            },
+                            {
+                                name: "User experience",
+                                question: "What is the extent of user experience after migration?",
+                                dimensions: {
+                                    S: "1 - Security steps frustrate users due to inefficiency\n2 - Balanced security and usability sometimes missed\n3 - Secure and seamless access maintained\nNA - Not applicable",
+                                    C: "1 - Poor UX leads to high support cost\n2 – Moderate UX leads to long-term support cost\nNA - Not applicable",
+                                    L: "1 - Non-compliant leads to legal issues\n2 - Acceptable UX\n3 – Smooth user interactions\nNA - Not applicable",
+                                    PK: "1 - No skills to optimize UX post-migration\n2 - Understands user pain points partially\n3 - Skilled in optimizing UX with user feedback\nNA - Not applicable"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ];
+
+        // Current user and phase tracking
+        let currentUser = null;
+        let currentPhaseIndex = 0;
+        let userResponses = {};
+
+        // Initialize tooltips
+        function initTooltips() {
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        }
+
+        // Calculate total score for a row
+        function calculateRowTotal(row) {
+            const inputs = row.querySelectorAll('.score-input');
+            let total = 0;
+            inputs.forEach(input => {
+                const value = parseInt(input.value) || 0;
+                total += value;
+            });
+            return total;
+        }
+
+        // Determine control unit based on total score
+        function getControlUnit(total) {
+            if (total <= 4) return { text: "Minimum", class: "control-minimum" };
+            if (total <= 8) return { text: "Moderate", class: "control-moderate" };
+            return { text: "Maximum", class: "control-maximum" };
+        }
+
+        // Update row totals and control units
+        function updateRowCalculations(row) {
+            const total = calculateRowTotal(row);
+            const totalCell = row.querySelector('.total-score');
+            const controlCell = row.querySelector('.control-unit');
+            
+            if (totalCell) totalCell.textContent = total;
+            if (controlCell) {
+                const control = getControlUnit(total);
+                controlCell.textContent = control.text;
+                controlCell.className = `control-unit ${control.class}`;
+            }
+        }
+
+        // Generate phase containers
+        function generatePhaseContainers() {
+            const phaseContainers = document.getElementById('phaseContainers');
+            phaseContainers.innerHTML = '';
+
+            evaluationData.forEach((phaseData, index) => {
+                const phaseContainer = document.createElement('div');
+                phaseContainer.className = `phase-container ${index === 0 ? '' : 'hidden'}`;
+                phaseContainer.id = `phase-${index}`;
+                
+                // Phase header
+                phaseContainer.innerHTML = `
+                    <h2 class="text-center mb-4">${phaseData.phase}</h2>
+                    <table class="table table-bordered evaluation-table">
+                        <thead>
+                            <tr>
+                                <th>Metric</th>
+                                <th>Indicator</th>
+                                <th>Question</th>
+                                <th>Security (S)</th>
+                                <th>Cost (C)</th>
+                                <th>Legal (L)</th>
+                                <th>Personnel Knowledge (PK)</th>
+                                <th>Total Score</th>
+                                <th>Control Unit</th>
+                            </tr>
+                        </thead>
+                        <tbody id="phase-${index}-body">
+                            <!-- Table content will be generated here -->
+                        </tbody>
+                    </table>
+                    <div class="summary-container">
+                        <div class="summary-title">Phase Summary</div>
+                        <div id="phase-${index}-summary">
+                            <!-- Summary content will be generated here -->
+                        </div>
+                    </div>
+                `;
+
+                // Generate table rows for each metric and indicator
+                const tableBody = phaseContainer.querySelector(`#phase-${index}-body`);
+                const summaryDiv = phaseContainer.querySelector(`#phase-${index}-summary`);
+                
+                let totalPhaseScore = 0;
+                let totalPossibleScore = 0;
+                let controlUnitCounts = { Minimum: 0, Moderate: 0, Maximum: 0 };
+                
+                phaseData.metrics.forEach(metricData => {
+                    metricData.indicators.forEach((indicator, idx) => {
+                        const row = document.createElement('tr');
+                        
+                        // Only show metric for first row of each metric group
+                        const metricCell = idx === 0 ? 
+                            `<td rowspan="${metricData.indicators.length}">${metricData.metric}</td>` : 
+                            '';
+                            
+                        row.innerHTML = `
+                            ${metricCell}
+                            <td>${indicator.name}</td>
+                            <td>${indicator.question}</td>
+                            <td>
+                                <input type="number" class="score-input" min="1" max="3" 
+                                    data-phase="${phaseData.phase}" data-indicator="${indicator.name}" data-dim="S"
+                                    data-bs-toggle="tooltip" data-bs-placement="top" title="${indicator.dimensions.S.replace(/\n/g, '<br>')}">
+                            </td>
+                            <td>
+                                <input type="number" class="score-input" min="1" max="3" 
+                                    data-phase="${phaseData.phase}" data-indicator="${indicator.name}" data-dim="C"
+                                    data-bs-toggle="tooltip" data-bs-placement="top" title="${indicator.dimensions.C.replace(/\n/g, '<br>')}">
+                            </td>
+                            <td>
+                                <input type="number" class="score-input" min="1" max="3" 
+                                    data-phase="${phaseData.phase}" data-indicator="${indicator.name}" data-dim="L"
+                                    data-bs-toggle="tooltip" data-bs-placement="top" title="${indicator.dimensions.L.replace(/\n/g, '<br>')}">
+                            </td>
+                            <td>
+                                <input type="number" class="score-input" min="1" max="3" 
+                                    data-phase="${phaseData.phase}" data-indicator="${indicator.name}" data-dim="PK"
+                                    data-bs-toggle="tooltip" data-bs-placement="top" title="${indicator.dimensions.PK.replace(/\n/g, '<br>')}">
+                            </td>
+                            <td class="total-score">0</td>
+                            <td class="control-unit control-minimum">Minimum</td>
+                        `;
+                        
+                        tableBody.appendChild(row);
+                        
+                        // Add event listeners to score inputs
+                        const inputs = row.querySelectorAll('.score-input');
+                        inputs.forEach(input => {
+                            input.addEventListener('change', function() {
+                                updateRowCalculations(row);
+                                updatePhaseSummary(index);
+                            });
+                        });
+                        
+                        // Calculate possible score for this indicator (4 dimensions * max 3 points)
+                        totalPossibleScore += 12;
+                    });
+                });
+                
+                // Add navigation buttons
+                const navigationDiv = document.createElement('div');
+                navigationDiv.className = 'navigation-buttons';
+                
+                if (index === 0) {
+                    navigationDiv.innerHTML = `
+                        <div></div>
+                        <button class="btn btn-primary next-btn" data-phase="${index}">
+                            Next Phase <i class="fas fa-arrow-right ms-2"></i>
+                        </button>
+                    `;
+                } else if (index === evaluationData.length - 1) {
+                    navigationDiv.innerHTML = `
+                        <button class="btn btn-primary prev-btn" data-phase="${index}">
+                            <i class="fas fa-arrow-left me-2"></i> Previous Phase
+                        </button>
+                        <button class="btn btn-success submit-btn" data-phase="${index}">
+                            Submit Evaluation <i class="fas fa-check ms-2"></i>
+                        </button>
+                    `;
+                } else {
+                    navigationDiv.innerHTML = `
+                        <button class="btn btn-primary prev-btn" data-phase="${index}">
+                            <i class="fas fa-arrow-left me-2"></i> Previous Phase
+                        </button>
+                        <button class="btn btn-primary next-btn" data-phase="${index}">
+                            Next Phase <i class="fas fa-arrow-right ms-2"></i>
+                        </button>
+                    `;
+                }
+                
+                phaseContainer.appendChild(navigationDiv);
+                phaseContainers.appendChild(phaseContainer);
+                
+                // Initialize phase summary
+                updatePhaseSummary(index);
+            });
+
+            // Load any saved responses
+            loadResponses();
+            initTooltips();
+        }
+
+        // Update phase summary
+       function updatePhaseSummary(phaseIndex) {
+    const phaseContainer = document.getElementById(`phase-${phaseIndex}`);
+    if (!phaseContainer) return;
     
-    <div class="btn-group">
-      <button onclick="calculateControl()">Submit</button>
-      <button class="secondary-btn" onclick="clearResults()">Clear Results</button>
-      <button class="secondary-btn" onclick="exportReport()">Export Report</button>
-    </div>
+    const summaryDiv = phaseContainer.querySelector(`#phase-${phaseIndex}-summary`);
+    const rows = phaseContainer.querySelectorAll('tbody tr');
     
-    <div class="result" id="output"></div>
-  </div>
-
-  <!-- Overall Dashboard Tab -->
-  <div id="overall" class="tab-page">
-    <h2>User Control Measurement Dashboard</h2>
-    <p>Comprehensive overview of user control levels across cloud data migration phases.</p>
+    let totalScore = 0;
+    let totalPossibleScore = 0;
+    let controlUnitCounts = { Minimum: 0, Moderate: 0, Maximum: 0 };
     
-    <div class="card-container">
-      <div class="card">
-        <h4>Control Level Summary</h4>
-        <p>Visual representation of your overall user control status will appear here after calculation.</p>
-      </div>
-      <div class="card">
-        <h4>Phase Performance</h4>
-        <p>Detailed breakdown of user control metrics by migration phase will be displayed here.</p>
-      </div>
-      <div class="card">
-        <h4>Recommendations</h4>
-        <p>Personalized optimization suggestions based on your metrics will appear here.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Metric Descriptions Tab -->
-  <div id="details" class="tab-page">
-    <h2>Metric Descriptions</h2>
-    <p>Detailed explanations of all metrics and indicators used in the user control evaluation.</p>
-    <ul id="descriptionList"></ul>
-  </div>
-</div>
-
-<script>
-const indicators = [
-  // Standards Metrics (Pre-migration, Risk Assessment, Data Preparation)
-  { 
-    phase: 'Pre-migration planning and analysis', 
-    metric: 'Standards', 
-    indicator: 'Best practice', 
-    desc: 'The use of cloud procedures that are prescribed as being most effective' 
-  },
-  { 
-    phase: 'Pre-migration planning and analysis', 
-    metric: 'Standards', 
-    indicator: 'Authentication', 
-    desc: 'Only intended users are allowed access' 
-  },
-  { 
-    phase: 'Pre-migration planning and analysis', 
-    metric: 'Standards', 
-    indicator: 'Strategy', 
-    desc: 'The migration plan should match the data migration process' 
-  },
-  { 
-    phase: 'Pre-migration planning and analysis', 
-    metric: 'Standards', 
-    indicator: 'Industry', 
-    desc: 'Allow for seamless cloud data migration process' 
-  },
-  
-  { 
-    phase: 'Risk assessment and strategy', 
-    metric: 'Standards', 
-    indicator: 'Strategy', 
-    desc: 'A well-defined plan for the cloud data migration' 
-  },
-  { 
-    phase: 'Risk assessment and strategy', 
-    metric: 'Standards', 
-    indicator: 'Authentication', 
-    desc: 'Assess probable access points and provide relevant measures' 
-  },
-  { 
-    phase: 'Risk assessment and strategy', 
-    metric: 'Standards', 
-    indicator: 'Industry', 
-    desc: 'Build in risk assessment industry standards in design' 
-  },
-  
-  { 
-    phase: 'Data preparation and cleansing', 
-    metric: 'Standards', 
-    indicator: 'Best practice', 
-    desc: 'Doing data extraction from legacy database to the target accordingly' 
-  },
-  { 
-    phase: 'Data preparation and cleansing', 
-    metric: 'Standards', 
-    indicator: 'Authentication', 
-    desc: 'Data is confirmed to be consistent, quality, and properly formatted' 
-  },
-  { 
-    phase: 'Data preparation and cleansing', 
-    metric: 'Standards', 
-    indicator: 'Industry', 
-    desc: 'Technicalities involved agree with cloud companies and practitioners' 
-  },
-  { 
-    phase: 'Data preparation and cleansing', 
-    metric: 'Standards', 
-    indicator: 'Strategy', 
-    desc: 'Source data needs to be audited, cleansed, prepared, and validated' 
-  },
-  
-  // Performance Metrics (Migration Execution, Post-migration)
-  { 
-    phase: 'Migration execution', 
-    metric: 'Performance', 
-    indicator: 'QoS', 
-    desc: 'Provide different priorities to different applications, users, and processes' 
-  },
-  { 
-    phase: 'Migration execution', 
-    metric: 'Performance', 
-    indicator: 'Reliability', 
-    desc: 'The user can rely on the data migration process' 
-  },
-  { 
-    phase: 'Migration execution', 
-    metric: 'Performance', 
-    indicator: 'Time', 
-    desc: 'Data migration from on-premise to cloud is carried within expected period' 
-  },
-  { 
-    phase: 'Migration execution', 
-    metric: 'Performance', 
-    indicator: 'Capacity', 
-    desc: 'Utilization of workload in the cloud data migration process' 
-  },
-  { 
-    phase: 'Migration execution', 
-    metric: 'Performance', 
-    indicator: 'Downtime', 
-    desc: 'No interference with business transactions' 
-  },
-  { 
-    phase: 'Migration execution', 
-    metric: 'Performance', 
-    indicator: 'Throughput', 
-    desc: 'The amount of data that is transferred to cloud in a given time' 
-  },
-  { 
-    phase: 'Migration execution', 
-    metric: 'Performance', 
-    indicator: 'Transfer speed', 
-    desc: 'The extent of data transferred Mbps from on-premise to cloud' 
-  },
-  
-  { 
-    phase: 'Post-migration validation and optimization', 
-    metric: 'Performance', 
-    indicator: 'QoS', 
-    desc: 'Maintaining different priorities to different applications, users, and processes' 
-  },
-  { 
-    phase: 'Post-migration validation and optimization', 
-    metric: 'Performance', 
-    indicator: 'Throughput', 
-    desc: 'Application response to data access' 
-  },
-  { 
-    phase: 'Post-migration validation and optimization', 
-    metric: 'Performance', 
-    indicator: 'Availability', 
-    desc: 'Data is available as it were before migration' 
-  },
-  { 
-    phase: 'Post-migration validation and optimization', 
-    metric: 'Performance', 
-    indicator: 'Downtime', 
-    desc: 'Informed about planned downtime, and scheduling it, minimizes the interference on business transactions' 
-  },
-  { 
-    phase: 'Post-migration validation and optimization', 
-    metric: 'Performance', 
-    indicator: 'User experience', 
-    desc: 'Smooth experience for user is crucial' 
-  }
-];
-
-let currentPhase = '';
-
-window.onload = () => {
-  const tableBody = document.getElementById('metricsTable');
-  const descList = document.getElementById('descriptionList');
-  
-  indicators.forEach((item, i) => {
-    // Add phase header row if this is a new phase
-    if (item.phase !== currentPhase) {
-      currentPhase = item.phase;
-      const phaseRow = document.createElement('tr');
-      phaseRow.className = 'phase-header';
-      phaseRow.innerHTML = `<td colspan="10">${currentPhase}</td>`;
-      tableBody.appendChild(phaseRow);
-    }
-    
-    const row = document.createElement('tr');
-    row.innerHTML = `
-      <td>${item.phase}</td>
-      <td>${item.metric}</td>
-      <td>${item.indicator}</td>
-      <td>${item.desc}</td>
-      <td><select id="security${i}" class="score-input">
-        <option value="0">NA</option>
-        <option value="1">1</option>
-        <option value="2" selected>2</option>
-        <option value="3">3</option>
-      </select></td>
-      <td><select id="cost${i}" class="score-input">
-        <option value="0">NA</option>
-        <option value="1">1</option>
-        <option value="2" selected>2</option>
-        <option value="3">3</option>
-      </select></td>
-      <td><select id="legal${i}" class="score-input">
-        <option value="0">NA</option>
-        <option value="1">1</option>
-        <option value="2" selected>2</option>
-        <option value="3">3</option>
-      </select></td>
-      <td><select id="personnel${i}" class="score-input">
-        <option value="0">NA</option>
-        <option value="1">1</option>
-        <option value="2" selected>2</option>
-        <option value="3">3</option>
-      </select></td>
-      <td id="total${i}">8</td>
-      <td id="level${i}">Moderate</td>
-    `;
-    tableBody.appendChild(row);
-
-    const descItem = document.createElement('li');
-    descItem.innerHTML = `
-      <strong>${item.indicator}</strong> 
-      <span style="color: #6c757d; font-size: 0.9em;">(${item.phase} - ${item.metric})</span><br>
-      ${item.desc}
-    `;
-    descList.appendChild(descItem);
-  });
-  
-  // Add event listeners to update totals when scores change
-  indicators.forEach((_, i) => {
-    document.getElementById(`security${i}`).addEventListener('change', () => updateRowTotal(i));
-    document.getElementById(`cost${i}`).addEventListener('change', () => updateRowTotal(i));
-    document.getElementById(`legal${i}`).addEventListener('change', () => updateRowTotal(i));
-    document.getElementById(`personnel${i}`).addEventListener('change', () => updateRowTotal(i));
-  });
-};
-
-function updateRowTotal(index) {
-  const security = parseInt(document.getElementById(`security${index}`).value);
-  const cost = parseInt(document.getElementById(`cost${index}`).value);
-  const legal = parseInt(document.getElementById(`legal${index}`).value);
-  const personnel = parseInt(document.getElementById(`personnel${index}`).value);
-  
-  const total = security + cost + legal + personnel;
-  const maxPossible = (security ? 3 : 0) + (cost ? 3 : 0) + (legal ? 3 : 0) + (personnel ? 3 : 0);
-  const percentage = maxPossible > 0 ? (total / maxPossible) * 100 : 0;
-  
-  let level = 'Minimum';
-  if (percentage > 40 && percentage <= 70) {
-    level = 'Moderate';
-  } else if (percentage > 70) {
-    level = 'Maximum';
-  }
-  
-  document.getElementById(`total${index}`).textContent = total;
-  document.getElementById(`level${index}`).textContent = level;
-  document.getElementById(`level${index}`).className = level.toLowerCase();
-}
-
-function openTab(tabId) {
-  const pages = document.querySelectorAll('.tab-page');
-  const buttons = document.querySelectorAll('.nav-tabs button');
-  pages.forEach(p => p.classList.remove('active-tab'));
-  buttons.forEach(b => b.classList.remove('active'));
-  document.getElementById(tabId).classList.add('active-tab');
-  event.target.classList.add('active');
-}
-
-function calculateControl() {
-  let totalControlScore = 0;
-  let maxPossibleScore = 0;
-  
-  // Define the phase order explicitly
-  const phaseOrder = [
-    'Pre-migration planning and analysis',
-    'Risk assessment and strategy',
-    'Data preparation and cleansing',
-    'Migration execution',
-    'Post-migration validation and optimization'
-  ];
-  
-  // Initialize phase data in the specified order
-  let phaseData = {};
-  phaseOrder.forEach(phase => {
-    phaseData[phase] = {
-      total: 0, 
-      count: 0, 
-      maxPossible: 0, 
-      indicators: [],
-      avgScore: 0,
-      level: ''
-    };
-  });
-
-  <!-- In the calculateControl() function, replace the html variable initialization with: -->
-let html = `
-    <h3>User Control Assessment Results</h3>
-    
-    <div style="overflow-x: auto;">
-      <table>
-        <thead>
-          <tr>
-            <th>Phase</th>
-            <th>Metric</th>
-            <th>Indicator</th>
-            <th colspan="4">Factors</th>
-            <th>Score</th>
-            <th>Phase Avg.</th>
-            <th>Control Level</th>
-          </tr>
-          <tr>
-            <th colspan="3"></th>
-            <th>S</th>
-            <th>C</th>
-            <th>L</th>
-            <th>PK</th>
-            <th></th>
-            <th></th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-`;
-
-  // Process indicators in the specified phase order
-  phaseOrder.forEach(phase => {
-    // Find all indicators for this phase
-    const phaseIndicators = indicators.filter(ind => ind.phase === phase);
-    
-    // Process each indicator in this phase
-    phaseIndicators.forEach((m, i) => {
-      const originalIndex = indicators.findIndex(ind => 
-        ind.phase === m.phase && 
-        ind.metric === m.metric && 
-        ind.indicator === m.indicator
-      );
-      
-      const security = parseInt(document.getElementById(`security${originalIndex}`).value);
-      const cost = parseInt(document.getElementById(`cost${originalIndex}`).value);
-      const legal = parseInt(document.getElementById(`legal${originalIndex}`).value);
-      const personnel = parseInt(document.getElementById(`personnel${originalIndex}`).value);
-      
-      const total = security + cost + legal + personnel;
-      const maxPossible = (security ? 3 : 0) + (cost ? 3 : 0) + (legal ? 3 : 0) + (personnel ? 3 : 0);
-      
-      // Add to phase totals
-      phaseData[phase].total += total;
-      phaseData[phase].maxPossible += maxPossible;
-      phaseData[phase].count++;
-      
-      // Add to overall totals
-      totalControlScore += total;
-      maxPossibleScore += maxPossible;
-      
-      // Add row to HTML
-      html += `
-        <tr>
-          <td>${m.phase}</td>
-          <td>${m.metric}</td>
-          <td>${m.indicator}</td>
-          <td>${security || 'NA'}</td>
-          <td>${cost || 'NA'}</td>
-          <td>${legal || 'NA'}</td>
-          <td>${personnel || 'NA'}</td>
-          <td>${total}</td>
-          ${i === 0 ? 
-            `<td rowspan="${phaseIndicators.length}" style="vertical-align: middle;" id="phaseAvg${phase.replace(/\s+/g, '')}"></td>
-             <td rowspan="${phaseIndicators.length}" style="vertical-align: middle;" id="phaseLevel${phase.replace(/\s+/g, '')}"></td>` : 
-            ''
-          }
-        </tr>
-      `;
+    rows.forEach(row => {
+        const total = calculateRowTotal(row);
+        totalScore += total;
+        totalPossibleScore += 12; // 4 dimensions * max 3 points
+        
+        const control = getControlUnit(total);
+        controlUnitCounts[control.text]++;
     });
     
-    // Calculate phase average
-    const phaseAvg = (phaseData[phase].total / phaseData[phase].maxPossible) * 100;
-    phaseData[phase].avgScore = phaseAvg;
-    phaseData[phase].level = phaseAvg <= 40 ? 'Minimum' : phaseAvg <= 70 ? 'Moderate' : 'Maximum';
+    const percentage = Math.round((totalScore / totalPossibleScore) * 100);
     
-    // Update phase average and level in HTML
-    html = html.replace(`id="phaseAvg${phase.replace(/\s+/g, '')}">`, 
-                    `id="phaseAvg${phase.replace(/\s+/g, '')}">${phaseAvg.toFixed(1)}%`);
-    html = html.replace(`id="phaseLevel${phase.replace(/\s+/g, '')}">`, 
-                    `id="phaseLevel${phase.replace(/\s+/g, '')}" class="${phaseData[phase].level.toLowerCase()}">${phaseData[phase].level}`);
-  });
-
-  html += `</tbody></table></div>`;
-  
-  // Add overall score
-  const overall = (totalControlScore / maxPossibleScore) * 100;
-  let overallLevel = overall <= 40 ? 'Minimum' : overall <= 70 ? 'Moderate' : 'Maximum';
-  
- html += `
-    <div class="overall">
-      <strong>Overall User Control Level:</strong> ${overall.toFixed(1)}% — 
-      <strong class="${overallLevel.toLowerCase()}">${overallLevel} Control</strong>
-    </div>
-    
-    <h3 style="margin-top: 30px;">Phase Summary</h3>
-    <div class="card-container" style="margin-top: 20px;">
-`;
-  // Add phase summary
- // Add phase summary cards
-phaseOrder.forEach(phase => {
-  html += `
-    <div class="card">
-      <h4>${phase}</h4>
-      <div style="text-align: center; margin: 10px 0;">
-        <div style="font-size: 24px; font-weight: bold; 
-          color: ${phaseData[phase].avgScore <= 40 ? 'var(--danger-color)' : 
-                  phaseData[phase].avgScore <= 70 ? 'var(--warning-color)' : 'var(--success-color)'}">
-          ${phaseData[phase].avgScore.toFixed(1)}%
-        </div>
-        <div class="${phaseData[phase].level.toLowerCase()}" style="margin-top: 5px;">
-          ${phaseData[phase].level} Control
-        </div>
-      </div>
-    </div>
-  `;
-});
-
-html += `</div>`;
-  
-  document.getElementById('output').innerHTML = html;
-  
-  // Update dashboard tab with visualizations
-  updateDashboard(phaseData, overall);
-}
-function exportReport() {
-  // Create a temporary element to hold our report HTML
-  const reportContent = document.createElement('div');
-  reportContent.innerHTML = document.getElementById('output').innerHTML;
-  
-  // Add title and date to the report
-  const title = document.createElement('h1');
-  title.textContent = 'User Control Measurement Report';
-  title.style.textAlign = 'center';
-  title.style.marginBottom = '20px';
-  title.style.color = '#4361ee';
-  
-  const date = document.createElement('p');
-  date.textContent = 'Report generated on: ' + new Date().toLocaleString();
-  date.style.textAlign = 'center';
-  date.style.marginBottom = '30px';
-  date.style.color = '#6c757d';
-  
-  reportContent.insertBefore(date, reportContent.firstChild);
-  reportContent.insertBefore(title, reportContent.firstChild);
-  
-  // Create a new window with the report content
-  const reportWindow = window.open('', '_blank');
-  reportWindow.document.write(`
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <title>User Control Measurement Report</title>
-      <style>
-        body { font-family: Arial, sans-serif; line-height: 1.6; color: #212529; padding: 20px; }
-        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-        th { background-color: #4361ee; color: white; padding: 10px; text-align: left; }
-        td { padding: 8px 10px; border-bottom: 1px solid #e9ecef; }
-        tr:nth-child(even) { background-color: #f8f9fa; }
-        .card { background-color: white; border-radius: 8px; padding: 15px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .minimum { color: #f94144; font-weight: bold; }
-        .moderate { color: #f8961e; font-weight: bold; }
-        .maximum { color: #4cc9f0; font-weight: bold; }
-        .overall { padding: 15px; background-color: #f8f9fa; border-radius: 8px; margin-top: 20px; }
-        .hint-box { background-color: #e9ecef; padding: 10px; border-radius: 8px; margin-bottom: 20px; }
-      </style>
-    </head>
-    <body>
-      ${reportContent.innerHTML}
-    </body>
-    </html>
-  `);
-  
-  reportWindow.document.close();
-  
-  // Give the browser a moment to render the content before printing
-  setTimeout(() => {
-    reportWindow.print();
-  }, 500);
-}
-
-function updateDashboard(phaseData, overall) {
-  const dashboardTab = document.getElementById('overall');
-  
-  let dashboardHTML = `
-    <h2>User Control Measurement Dashboard</h2>
-    <p>Comprehensive overview of user control levels across cloud data migration phases.</p>
-    
-    <div class="card-container">
-      <div class="card">
-        <h4>Overall Control Status</h4>
-        <div style="text-align: center; margin: 20px 0;">
-          <div style="width: 150px; height: 150px; margin: 0 auto; border-radius: 50%; 
-            background: conic-gradient(
-              ${overall <= 40 ? '#f94144' : overall <= 70 ? '#f8961e' : '#4cc9f0'} 0%, 
-              #e9ecef ${100 - overall}% 100%
-            );
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-            <div style="background: white; width: 80%; height: 80%; border-radius: 50%; 
-              display: flex; align-items: center; justify-content: center; font-size: 24px; 
-              font-weight: bold; color: ${overall <= 40 ? '#f94144' : overall <= 70 ? '#f8961e' : '#4cc9f0'};">
-              ${overall.toFixed(0)}%
+    summaryDiv.innerHTML = `
+        <div class="summary-grid">
+            <div class="summary-grid-item">
+                <div class="summary-grid-title">Total Score</div>
+                <div>${totalScore} out of ${totalPossibleScore}</div>
+                <div>${percentage}%</div>
             </div>
-          </div>
-          <p style="margin-top: 15px; font-size: 18px;">
-            <strong class="${overall <= 40 ? 'minimum' : overall <= 70 ? 'moderate' : 'maximum'}">
-              ${overall <= 40 ? 'Minimum Control' : overall <= 70 ? 'Moderate Control' : 'Maximum Control'}
-            </strong>
-          </p>
+            <div class="summary-grid-item">
+                <div class="summary-grid-title">Overall Control Level</div>
+                <div>${getOverallControlLevel(controlUnitCounts)}</div>
+            </div>
+            <div class="summary-grid-item">
+                <div class="summary-grid-title">Minimum Controls</div>
+                <div>${controlUnitCounts.Minimum}</div>
+            </div>
+            <div class="summary-grid-item">
+                <div class="summary-grid-title">Moderate Controls</div>
+                <div>${controlUnitCounts.Moderate}</div>
+            </div>
+            <div class="summary-grid-item">
+                <div class="summary-grid-title">Maximum Controls</div>
+                <div>${controlUnitCounts.Maximum}</div>
+            </div>
         </div>
-      </div>
-      
-      <div class="card">
-        <h4>Phase Performance</h4>
-        <div style="margin-top: 15px;">
-  `;
-  
-  // Add phase bars
-  for (const phase in phaseData) {
-    const avg = (phaseData[phase].total / phaseData[phase].maxPossible) * 100;
-    const level = avg <= 40 ? 'minimum' : avg <= 70 ? 'moderate' : 'maximum';
-    
-    dashboardHTML += `
-      <div style="margin-bottom: 15px;">
-        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-          <span>${phase}</span>
-          <span>${avg.toFixed(1)}%</span>
-        </div>
-        <div style="height: 10px; background: #e9ecef; border-radius: 5px; overflow: hidden;">
-          <div style="height: 100%; width: ${avg}%; 
-            background: ${avg <= 40 ? 'var(--danger-color)' : avg <= 70 ? 'var(--warning-color)' : 'var(--success-color)'}; 
-            border-radius: 5px;"></div>
-        </div>
-      </div>
     `;
-  }
-  
-  dashboardHTML += `
-        </div>
-      </div>
-      
-      <div class="card">
-        <h4>Recommendations</h4>
-        <div style="margin-top: 15px;">
-          ${getRecommendations(phaseData, overall)}
-        </div>
-      </div>
-    </div>
-  `;
-  
-  dashboardTab.innerHTML = dashboardHTML;
 }
 
-function getRecommendations(phaseData, overall) {
-  let recommendations = '';
-  
-  if (overall <= 40) {
-    recommendations += `
-      <p style="color: var(--danger-color); font-weight: 500;">
-        <strong>Critical Attention Needed:</strong> User control in your migration process is currently at high risk. 
-        Immediate action is recommended to address critical areas.
-      </p>
-    `;
-  } else if (overall <= 70) {
-    recommendations += `
-      <p style="color: var(--warning-color); font-weight: 500;">
-        <strong>Moderate Control:</strong> Your migration has acceptable user control levels but 
-        could benefit from improvements in several areas.
-      </p>
-    `;
-  } else {
-    recommendations += `
-      <p style="color: var(--success-color); font-weight: 500;">
-        <strong>Maximum Control:</strong> User control in your migration is well-managed. Focus on 
-        maintaining these standards and optimizing further.
-      </p>
-    `;
-  }
-  
-  // Add specific phase recommendations
-  recommendations += '<ul style="margin-top: 15px; list-style-type: none;">';
-  
-  for (const phase in phaseData) {
-    const avg = (phaseData[phase].total / phaseData[phase].maxPossible) * 100;
-    
-    if (avg <= 40) {
-      recommendations += `
-        <li style="margin-bottom: 10px; padding-left: 15px; border-left: 3px solid var(--danger-color);">
-          <strong>${phase}:</strong> Needs significant improvement in user control. Review processes and consult best practices.
-        </li>
-      `;
-    } else if (avg <= 70) {
-      recommendations += `
-        <li style="margin-bottom: 10px; padding-left: 15px; border-left: 3px solid var(--warning-color);">
-          <strong>${phase}:</strong> Could benefit from targeted enhancements to improve user control levels.
-        </li>
-      `;
-    }
-  }
-  
-  recommendations += '</ul>';
-  
-  return recommendations;
-}
-</script>
+        // Determine overall control level for the phase
+        function getOverallControlLevel(controlUnitCounts) {
+            const total = controlUnitCounts.Minimum + controlUnitCounts.Moderate + controlUnitCounts.Maximum;
+            if (total === 0) return "Not evaluated";
+            
+            const minimumPercent = (controlUnitCounts.Minimum / total) * 100;
+            const moderatePercent = (controlUnitCounts.Moderate / total) * 100;
+            const maximumPercent = (controlUnitCounts.Maximum / total) * 100;
+            
+            if (maximumPercent >= 60) return "Strong Control";
+            if (moderatePercent >= 50 || maximumPercent >= 30) return "Moderate Control";
+            if (minimumPercent >= 50) return "Weak Control";
+            return "Mixed Control";
+        }
 
+        // Save responses for current phase
+        function saveResponses(phaseIndex) {
+            const phaseContainer = document.getElementById(`phase-${phaseIndex}`);
+            if (!phaseContainer) return;
+            
+            const inputs = phaseContainer.querySelectorAll('.score-input');
+            const phaseName = evaluationData[phaseIndex].phase;
+            
+            if (!userResponses[currentUser]) {
+                userResponses[currentUser] = {};
+            }
+            
+            if (!userResponses[currentUser][phaseName]) {
+                userResponses[currentUser][phaseName] = {};
+            }
+            
+            inputs.forEach(input => {
+                const indicator = input.getAttribute('data-indicator');
+                const dim = input.getAttribute('data-dim');
+                const value = input.value;
+                
+                if (!userResponses[currentUser][phaseName][indicator]) {
+                    userResponses[currentUser][phaseName][indicator] = {};
+                }
+                
+                userResponses[currentUser][phaseName][indicator][dim] = value;
+            });
+            
+            // Save to localStorage
+            localStorage.setItem('migrationEvaluationResponses', JSON.stringify(userResponses));
+        }
+
+        // Load responses for all phases
+        function loadResponses() {
+            const savedResponses = localStorage.getItem('migrationEvaluationResponses');
+            if (savedResponses) {
+                userResponses = JSON.parse(savedResponses);
+                
+                if (currentUser && userResponses[currentUser]) {
+                    evaluationData.forEach((phaseData, phaseIndex) => {
+                        const phaseName = phaseData.phase;
+                        if (userResponses[currentUser][phaseName]) {
+                            const phaseContainer = document.getElementById(`phase-${phaseIndex}`);
+                            if (!phaseContainer) return;
+                            
+                            const inputs = phaseContainer.querySelectorAll('.score-input');
+                            inputs.forEach(input => {
+                                const indicator = input.getAttribute('data-indicator');
+                                const dim = input.getAttribute('data-dim');
+                                
+                                if (userResponses[currentUser][phaseName][indicator] && 
+                                    userResponses[currentUser][phaseName][indicator][dim]) {
+                                    input.value = userResponses[currentUser][phaseName][indicator][dim];
+                                    
+                                    // Trigger change event to update calculations
+                                    const event = new Event('change');
+                                    input.dispatchEvent(event);
+                                }
+                            });
+                        }
+                    });
+                }
+            }
+        }
+
+        // Navigate to phase
+        function goToPhase(phaseIndex) {
+            // Save current phase responses
+            saveResponses(currentPhaseIndex);
+            
+            // Hide current phase
+            document.getElementById(`phase-${currentPhaseIndex}`).classList.add('hidden');
+            
+            // Show new phase
+            document.getElementById(`phase-${phaseIndex}`).classList.remove('hidden');
+            
+            // Update current phase index
+            currentPhaseIndex = phaseIndex;
+            
+            // Update progress bar
+            updateProgressBar();
+        }
+
+        // Update progress bar
+        function updateProgressBar() {
+            const progress = ((currentPhaseIndex + 1) / evaluationData.length) * 100;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+            document.getElementById('progressBar').setAttribute('aria-valuenow', progress);
+            document.getElementById('progressBar').textContent = `Phase ${currentPhaseIndex + 1} of ${evaluationData.length}`;
+        }
+
+        // Export to Excel
+        function exportToExcel() {
+            // First save any unsaved responses
+            saveResponses(currentPhaseIndex);
+            
+            // Create a workbook
+            const workbook = XLSX.utils.book_new();
+            
+            // Add a worksheet for each phase
+            evaluationData.forEach((phaseData, phaseIndex) => {
+                const phaseName = phaseData.phase;
+                const worksheetData = [];
+                
+                // Add headers
+                worksheetData.push([
+                    'Metric', 'Indicator', 'Question', 
+                    'Security (S)', 'Cost (C)', 'Legal (L)', 'Personnel Knowledge (PK)',
+                    'Total Score', 'Control Unit'
+                ]);
+                
+                // Add data rows
+                phaseData.metrics.forEach(metricData => {
+                    metricData.indicators.forEach(indicator => {
+                        const row = [
+                            metricData.metric,
+                            indicator.name,
+                            indicator.question
+                        ];
+                        
+                        // Get the saved responses for this indicator
+                        const sValue = userResponses[currentUser]?.[phaseName]?.[indicator.name]?.S || '';
+                        const cValue = userResponses[currentUser]?.[phaseName]?.[indicator.name]?.C || '';
+                        const lValue = userResponses[currentUser]?.[phaseName]?.[indicator.name]?.L || '';
+                        const pkValue = userResponses[currentUser]?.[phaseName]?.[indicator.name]?.PK || '';
+                        
+                        row.push(sValue, cValue, lValue, pkValue);
+                        
+                        // Calculate total and control unit
+                        const total = (parseInt(sValue) || 0) + (parseInt(cValue) || 0) + 
+                                       (parseInt(lValue) || 0) + (parseInt(pkValue) || 0);
+                        const control = getControlUnit(total);
+                        
+                        row.push(total, control.text);
+                        worksheetData.push(row);
+                    });
+                });
+                
+                // Add summary row
+                worksheetData.push([]); // Empty row
+                
+                // Calculate summary data
+                let totalScore = 0;
+                let totalPossibleScore = 0;
+                let controlUnitCounts = { Minimum: 0, Moderate: 0, Maximum: 0 };
+                
+                phaseData.metrics.forEach(metricData => {
+                    metricData.indicators.forEach(indicator => {
+                        const sValue = parseInt(userResponses[currentUser]?.[phaseName]?.[indicator.name]?.S) || 0;
+                        const cValue = parseInt(userResponses[currentUser]?.[phaseName]?.[indicator.name]?.C) || 0;
+                        const lValue = parseInt(userResponses[currentUser]?.[phaseName]?.[indicator.name]?.L) || 0;
+                        const pkValue = parseInt(userResponses[currentUser]?.[phaseName]?.[indicator.name]?.PK) || 0;
+                        
+                        const total = sValue + cValue + lValue + pkValue;
+                        totalScore += total;
+                        totalPossibleScore += 12; // 4 dimensions * max 3 points
+                        
+                        const control = getControlUnit(total);
+                        controlUnitCounts[control.text]++;
+                    });
+                });
+                
+                const percentage = Math.round((totalScore / totalPossibleScore) * 100);
+                const overallControl = getOverallControlLevel(controlUnitCounts);
+                
+                worksheetData.push(['Phase Summary:']);
+                worksheetData.push(['Total Score', totalScore]);
+                worksheetData.push(['Possible Score', totalPossibleScore]);
+                worksheetData.push(['Percentage', `${percentage}%`]);
+                worksheetData.push(['Minimum Controls', controlUnitCounts.Minimum]);
+                worksheetData.push(['Moderate Controls', controlUnitCounts.Moderate]);
+                worksheetData.push(['Maximum Controls', controlUnitCounts.Maximum]);
+                worksheetData.push(['Overall Control Level', overallControl]);
+                
+                // Add the worksheet to the workbook
+                const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
+                XLSX.utils.book_append_sheet(workbook, worksheet, phaseName.substring(0, 31)); // Sheet name max 31 chars
+            });
+            
+            // Export the workbook
+            XLSX.writeFile(workbook, `Migration_Evaluation_${currentUser}.xlsx`);
+        }
+
+        // Handle login
+        document.getElementById('loginBtn').addEventListener('click', function() {
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+            
+            if (username && password) {
+                currentUser = username;
+                document.getElementById('currentUserDisplay').textContent = `Evaluator: ${currentUser}`;
+                
+                // Show evaluation screen
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('evaluationScreen').classList.remove('hidden');
+                
+                // Generate phase containers
+                generatePhaseContainers();
+                updateProgressBar();
+            } else {
+                alert('Please enter both username and password');
+            }
+        });
+
+        // Handle logout
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            // Save current responses
+            saveResponses(currentPhaseIndex);
+            
+            // Reset form
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            
+            // Show login screen
+            document.getElementById('loginScreen').classList.remove('hidden');
+            document.getElementById('evaluationScreen').classList.add('hidden');
+            
+            currentUser = null;
+        });
+
+        // Handle navigation buttons
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('next-btn')) {
+                const phaseIndex = parseInt(e.target.getAttribute('data-phase'));
+                goToPhase(phaseIndex + 1);
+            } else if (e.target.classList.contains('prev-btn')) {
+                const phaseIndex = parseInt(e.target.getAttribute('data-phase'));
+                goToPhase(phaseIndex - 1);
+            } else if (e.target.classList.contains('submit-btn')) {
+                saveResponses(currentPhaseIndex);
+                alert('Evaluation submitted successfully!');
+                exportToExcel();
+            }
+        });
+
+        // Handle export button
+        document.getElementById('exportBtn').addEventListener('click', exportToExcel);
+    </script>
 </body>
 </html>
-
